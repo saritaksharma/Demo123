@@ -1,0 +1,120 @@
+
+ <project name="CloneGitViaAnt" default="version" basedir=".">
+ <!--  Define the git -->
+ 
+ 	
+ 	
+ 	
+ <macrodef name="git">
+  <attribute name="command" /> 
+  <attribute name="dir" default="" /> 
+  <element name="args" optional="true" /> 
+ <sequential>
+  <echo message="git @{command}" /> 
+ <exec executable="git" dir="@{dir}">
+  <arg value="@{command}" /> 
+  <args /> 
+  </exec>
+  </sequential>
+  </macrodef> 
+ <!--  Define the git clone and arguments 
+  --> 
+ <!--macrodef name="git-clone-pull">
+  <attribute name="repository" /> 
+  <attribute name="dest" /> 
+ <sequential>
+ <git command="clone">
+ <args>
+  <arg value="@{repository}" /> 
+  <arg value="@{dest}" /> 
+  </args>
+  </git>
+  </sequential>
+  </macrodef-->
+ <!--  Checking gitclone and git fetch 
+  
+  <target name="git_checkout" depends="cloneGit, fetchGit" /> -->
+ <!--  Actual target for clone ie repository and destination 
+  --> 
+ 	
+ 	
+ 	
+ 	<!--
+ <target name="cloneGit" depends="checkDest" unless="dest-contains-files">
+  <echo message="Directory clonned is empty git clone" /> 
+  <git-clone-pull repository="https://github.com/saritaksharma/AntScript.git" dest="clonned" /> 
+  </target>
+   try to fetch if the destination is non empty 
+  --> 
+ 	
+ 	
+ 	<!--
+ <target name="fetchGit" depends="checkDest" if="dest-contains-files">
+  <echo message="Directory clonned is NOT empty git fetch" /> 
+  <git command="fetch" dir="clonned" /> 
+  </target>
+  Checking destination is empty or not if empty clone else try to fetch 
+  --> 
+ 	
+ 	
+ 	<!--
+ <target name="checkDest" description="checking whether destination is empty or non-empty">
+  <mkdir dir="clonned" /> 
+  <fileset dir="clonned" id="fileset" /> 
+  <pathconvert refid="fileset" property="dest-contains-files" setonempty="false" /> 
+  </target>
+  Creating jar file of the project exclude jar files 
+  --> 
+ 	
+ 	
+ 	<!--
+<target name="jar">
+  <jar destfile="clonned/project.jar" basedir="clonned" excludes="*.jar*" /> 
+  </target>
+  Creating zip file of the project  
+  --> 
+ 	
+ 	<!--
+ <target name="zip">
+  <zip destfile="clonned.zip" basedir="clonned"  /> 
+  </target>
+   <target name="compile" description="Compile time Source">
+	
+		<echo message="compiling the src and generating .class into bin"></echo>
+		<javac includeantruntime="false" srcdir="clonned/src" destdir="clonned/bin" complile="modern"></javac>
+	</target> 
+
+ 	
+
+ 	
+ <target name="clean" description="Clean the destination files">
+		<echo message="Cleaning working directory"></echo>
+		<delete dir="clonned/bin"></delete>
+	</target> 
+ 	
+ 	
+ 	-->
+ 	
+ 
+ 	
+ 	<target name="version" description="Commits all changes to version git">
+ 		<input message="Commit message" addproperty="commit-message" />
+ 		<echo message="Commiting all changes with message ${commit-message}" />
+ 		<git command="add">
+ 			<args>
+ 				<arg value="." />
+ 			</args>
+ 		</git>
+ 		<git command="commit">
+ 			<args>
+ 				<arg value="-m ${commit-message}" />
+ 			</args>
+ 		</git> 
+ 		
+ 		
+ 		<git command="push"  />
+ 	</target>  
+ 	
+ 
+  
+  </project>
